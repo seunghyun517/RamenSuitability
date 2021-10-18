@@ -11,7 +11,7 @@ for line in f:
     menuData[idx] = (menu, rate)
 
 
-def linearAverage(L):
+def getLinearAverage(L):
     N = len(L)
     summ = 0
     for i in range(N):
@@ -19,7 +19,7 @@ def linearAverage(L):
     return summ / (N*(N+1)/2)
 
 
-def menuScore(menu):
+def computeMenuScore(menu):
     N = len(menu)
 
     rateWithCmpstrLength = [0]*N
@@ -38,13 +38,13 @@ def menuScore(menu):
         else: 
             rateWithCmpstrLength[i-1] = ratesum / matchcnt
             
-    print(rateWithCmpstrLength)
+    # print(rateWithCmpstrLength)
 
     reducedList = [k for k in rateWithCmpstrLength if k != None]
-    score = linearAverage(reducedList) - 1
+    score = getLinearAverage(reducedList) - 1
     return 30 * (score - 2) + 50 # on average 0
 
 
 if __name__ == '__main__':
-    print(menuScore("찹쌀고구마치즈볼"))
+    print(computeMenuScore("찹쌀고구마치즈볼"))
                 
