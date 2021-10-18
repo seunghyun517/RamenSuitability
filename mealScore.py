@@ -7,6 +7,7 @@ def compileMeal(meal):
         menus[i] = re.compile('[가-힣]+').findall(menus[i])[0]
     return menus
 
+
 def computeMealScore(menus):
     for menu in menus:
         print(menu, computeMenuScore(menu))
