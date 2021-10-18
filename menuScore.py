@@ -42,7 +42,10 @@ def computeMenuScore(menu):
 
     reducedList = [k for k in rateWithCmpstrLength if k != None]
     score = getLinearAverage(reducedList) - 1
-    return 30 * (score - 2) + 50 # on average 0
+    score = 25 * (score - 2) + 50
+    if score > 100: score = 100
+    if score < 0: score = 0
+    return score
 
 
 if __name__ == '__main__':

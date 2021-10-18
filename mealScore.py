@@ -11,12 +11,14 @@ def compileMeal(meal):
     return menus
 
 
-def computeMealScore(menus):
-    for menu in menus:
-        print(menu, computeMenuScore(menu))
-    return sum(computeMenuScore(menu) for menu in menus) / len(menus)
+def computeMealScore(meal):
+    menus = compileMeal(meal)
+    if __name__ == "__main__":
+        for menu in menus:
+            print(menu, computeMenuScore(menu))
+    return round(sum(computeMenuScore(menu) for menu in menus) / len(menus))
 
 
-today_meal = "단호박로제스파게티 ①②⑤⑥⑫ 게살스프⑧ 수비드폭립⑤⑩ 모짜렐라펄샐러드② 과일요거화채② 감자부꾸미 무피클 스파클링 (밥.김치.김)"
-today_menus = compileMeal(today_meal)
-print(computeMealScore(today_menus))
+if __name__ == "__main__":
+    today_meal = "쌀밥 맑은소고기국⑤⑯ 베이컨스크램블에그 ①②⑨⑩ 찐두부/볶음김치⑤⑨ 김구이⑤ 바나나 에너지바①②⑤⑥ 아몬드시리얼⑥/우유②"
+    print(computeMealScore(today_meal))
