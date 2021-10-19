@@ -1,22 +1,24 @@
-from menuScore import *
+from dishScore import *
 import re
 
 def compileMeal(meal):
-    premenus = meal.split()
-    menus = []
-    for premenu in premenus:
-        tmp = re.compile('[가-힣]+').findall(premenu)
+    predishes = meal.split()
+    dishes = []
+    for predish in predishes:
+        tmp = re.compile('[가-힣]+').findall(predish)
         if len(tmp) != 0:
-            menus.append(tmp[0])
-    return menus
+            dishes.append(tmp[0])
+    return dishes
 
 
 def computeMealScore(meal):
-    menus = compileMeal(meal)
+    dishes = compileMeal(meal)
     if __name__ == "__main__":
-        for menu in menus:
-            print(menu, computeMenuScore(menu))
-    return round(sum(computeMenuScore(menu) for menu in menus) / len(menus))
+        for dish in dishes:
+            print(dish, computeDishScore(dish))
+    dishScoreAvg = round(sum(computeDishScore(dish) for dish in dishes) / len(dishes))
+    mealScore = dishScoreAvg + (len(dishes)- 9) * 5
+    return mealScore
 
 
 if __name__ == "__main__":
