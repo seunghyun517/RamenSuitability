@@ -27,12 +27,12 @@ meals = [
 ]
 
 ratingofMeals = {
-    1: [{"user": "sangwoo", "rating": 3}, {"user": "seunghyun", "rating": 4}],
-    2: [{"user": "sangwoo", "rating": 3}, {"user": "seunghyun", "rating": 4}],
-    3: [{"user": "sangwoo", "rating": 3}, {"user": "seunghyun", "rating": 4}],
+    1: [{"user": "sangwoo", "rating": 2}, {"user": "seunghyun", "rating": 4}],
+    2: [{"user": "sangwoo", "rating": 1}, {"user": "seunghyun", "rating": 4}],
+    3: [{"user": "sangwoo", "rating": 4}, {"user": "seunghyun", "rating": 5}],
     4: [{"user": "sangwoo", "rating": 3}, {"user": "seunghyun", "rating": 4}],
     5: [{"user": "sangwoo", "rating": 3}, {"user": "seunghyun", "rating": 4}],
-    6: [{"user": "sangwoo", "rating": 3}, {"user": "seunghyun", "rating": 4}],
+    6: [{"user": "sangwoo", "rating": 3}, {"user": "seunghyun", "rating": 5}],
     7: [{"user": "sangwoo", "rating": 3}, {"user": "seunghyun", "rating": 4}]
 }
 
@@ -64,7 +64,7 @@ async def getMeals():
 @app.get("/meals/{meal_id}/ratings")
 async def getMealRatings(meal_id: int):
     ratings = ratingofMeals[meal_id]
-    ratingsum = [rating["rating"] for rating in ratings]
+    ratingsum = sum([rating["rating"] for rating in ratings])
     ratingavg = ratingsum / len(ratings)
     return {"ratings": ratings, "ratingavg": ratingavg}
 
