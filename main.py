@@ -26,9 +26,33 @@ meals = [
     {"id": 7, "meal": "아침", "menu":"쌀밥 맑은소고기국⑤⑯ 베이컨스크램블에그 ①②⑨⑩ 찐두부/볶음김치⑤⑨ 김구이⑤ 바나나 에너지바①②⑤⑥ 아몬드시리얼⑥/우유②"},
 ]
 
+commentsofMeals = {
+    1: [{"user": "sangwoo", "comment": "별로에요"}, 
+    {"user": "seunghyun", "comment": "생각보다 괜찮은듯?"}],
+    2: [{"user": "sangwoo", "comment": "별로에요"}, 
+    {"user": "seunghyun", "comment": "생각보다 괜찮은듯?"}],
+    3: [{"user": "sangwoo", "comment": "별로에요"}, 
+    {"user": "seunghyun", "comment": "생각보다 괜찮은듯?"}],
+    4: [{"user": "sangwoo", "comment": "별로에요"}, 
+    {"user": "seunghyun", "comment": "생각보다 괜찮은듯?"}],
+    5: [{"user": "sangwoo", "comment": "별로에요"}, 
+    {"user": "seunghyun", "comment": "생각보다 괜찮은듯?"}],
+    6: [{"user": "sangwoo", "comment": "별로에요"}, 
+    {"user": "seunghyun", "comment": "생각보다 괜찮은듯?"}],
+    7: [{"user": "sangwoo", "comment": "별로에요"}, 
+    {"user": "seunghyun", "comment": "생각보다 괜찮은듯?"}]
+}
+
 for meal in meals:
     meal["rating"] = computeMealScore(meal["menu"])
 
-@app.get("/")
-async def root():
-    return meals
+@app.get("/meals")
+async def getMeals():
+    cur_meals = meals[0:7]
+    return cur_meals
+
+@app.get("/meals/{meal_id}")
+async def getMealwithID(meal_id):
+    cur_meal = meals[meal_id]
+    cur_meal["comments"] = commentsofMeals[meal_id]
+    return cur_meal
