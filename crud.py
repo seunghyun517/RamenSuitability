@@ -1,11 +1,15 @@
+from sqlalchemy import schema
 from sqlalchemy.orm import Session
 from mealScore import computeMealScore
 import models, schemas
 
 
 def get_meals(db: Session, skip: int = 0, limit: int = 7):
-
     return db.query(models.Meal).offset(skip).limit(limit).all()
+
+
+def get_meal(db: Session, meal_id: int):
+    return db.query(models.Meal).filter(models.Meal.id == meal_id).first()
 
 
 def create_meal(db: Session, meal: schemas.MealCreate):
@@ -51,3 +55,11 @@ def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
     db.commit()
     db.refresh(db_item)
     return db_item
+
+
+def create_comment(db: Session, comment: schemas.CommentCreate, meal_id: int):
+    db_comment = models.Comment(**comment.dict(), meal_id=meal_id)
+    db.add(db_comment)
+    db.commit()
+    db.refresh(db_comment)
+    return db_comment

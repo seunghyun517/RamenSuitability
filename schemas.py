@@ -17,6 +17,22 @@ class Item(ItemBase):
         orm_mode = True
 
 
+class CommentBase(BaseModel):
+    content: str
+    writer_id: int
+
+class CommentCreate(CommentBase):
+    pass
+
+
+class Comment(CommentBase):
+    id: int
+    meal_id: int
+
+    class Config:
+        orm_mode = True
+
+
 class UserBase(BaseModel):
     email: str
 
@@ -28,6 +44,7 @@ class User(UserBase):
     id: int
     is_active: bool
     items: List[Item] = []
+    comments: List[Comment] = []
 
     class Config:
         orm_mode = True
@@ -43,6 +60,7 @@ class MealCreate(MealBase):
 class Meal(MealBase):
     id: int
     score: int
+    comments: List[Comment] = []
     
     class Config:
         orm_mode = True

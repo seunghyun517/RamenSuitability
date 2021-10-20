@@ -23,7 +23,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-meals = [
+datameals = [
     {"id": 1, "meal": "아침", "menu":"쌀밥 쇠고기떡국⑤⑯ 돈육꽈리장조림⑤⑩ 명란구운김⑤ 배추김치 바나나 우유식빵①②⑥ 아몬드시리얼/우유 ①②⑥"},
     {"id": 2, "meal": "점심", "menu":"차조밥 된장찌개⑤⑱ 차돌박이숙주볶음⑤⑯ 까르보떡볶이②⑩ 배추나물무침⑤ 갓김치⑨ 단감 불고기후랑크⑤⑩⑮ /머스터드①"},
     {"id": 3, "meal": "저녁", "menu":"쌀밥 김치찌개⑤⑩ 불낙전골⑤⑯ 참치야채볶음⑤ 오이부추무침⑤ 깍두기⑨ 아이브② 물떡꼬치"},
@@ -60,7 +60,7 @@ commentsofMeals = {
     {"user": "seunghyun", "content": "생각보다 괜찮은듯?"}]
 }
 
-for meal in meals:
+for meal in datameals:
     meal["score"] = computeMealScore(meal["menu"])
 
 # Dependency
@@ -82,22 +82,21 @@ def create_meal(meal: schemas.MealCreate, db: Session = Depends(get_db)):
     return crud.create_meal(db=db, meal=meal)
 
 
-@app.get("/meals/{mealid}")
-def read_meal(mealid: int):
-    return meals[mealid]
+@app.get("/meals/{meal_id}", response_model=schemas.Meal)
+def read_meal(meal_id: int, db: Session = Depends(get_db)):
+    return crud.get_meal(db=db, meal_id=meal_id)
 
-@app.get("/meals/{meal_id}/ratings")
-def read_meal_ratings(meal_id: int):
-    ratings = ratingofMeals[meal_id]
-    ratingsum = sum([rating["rating"] for rating in ratings])
-    ratingavg = ratingsum / len(ratings)
-    return {"ratings": ratings, "ratingavg": ratingavg}
-
-@app.get("/meals/{meal_id}/comments")
-def read_meal_comments(meal_id: int):
-    return commentsofMeals[meal_id]
+# @app.get("/meals/{meal_id}/ratings")
+# def read_meal_ratings(meal_id: int):
+#     ratings = ratingofMeals[meal_id]
+#     ratingsum = sum([rating["rating"] for rating in ratings])
+#     ratingavg = ratingsum / len(ratings)
+#     return {"ratings": ratings, "ratingavg": ratingavg}
 
 
+@app.post("/meals/{meal_id}/comments", response_model=schemas.Comment)
+def create_meal_comments(meal_id: int, comment: schemas.CommentCreate, db: Session = Depends(get_db)):
+    return crud.create_comment(db=db, comment=comment, meal_id=meal_id)
 
 
 @app.post("/users/", response_model=schemas.User)

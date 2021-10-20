@@ -9,6 +9,17 @@ class Meal(Base):
     time = Column(Integer)
     menu = Column(String)
     score = Column(Integer)
+    comments = relationship("Comment", back_populates="meal")
+
+
+class Comment(Base):
+    __tablename__ = "comments"
+    id = Column(Integer, primary_key=True, index=True)
+    content = Column(String)
+    writer_id = Column(Integer, ForeignKey("users.id"))
+    meal_id = Column(Integer, ForeignKey("meals.id"))
+    writer = relationship("User", back_populates="comments")
+    meal = relationship("Meal", back_populates="comments")
 
 
 class User(Base):
@@ -18,6 +29,8 @@ class User(Base):
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
     items = relationship("Item", back_populates="owner")
+    comments = relationship("Comment", back_populates="writer")
+
 
 
 class Item(Base):
