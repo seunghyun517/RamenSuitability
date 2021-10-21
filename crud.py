@@ -1,3 +1,4 @@
+from fastapi.exceptions import HTTPException
 from sqlalchemy import schema
 from sqlalchemy.orm import Session
 from mealScore import computeMealScore
@@ -19,6 +20,14 @@ def create_meal(db: Session, meal: schemas.MealCreate):
     db.commit()
     db.refresh(db_meal)
     return db_meal
+
+
+def update_meal(db: Session, current_meal: models.Meal, new_meal: schemas.MealCreate, meal_id: int):
+    update_data = new_meal.dict(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(current_meal, key, value)
+    db.commit()
+    return current_meal
 
 
 def get_user(db: Session, user_id: int):
@@ -63,3 +72,14 @@ def create_comment(db: Session, comment: schemas.CommentCreate, meal_id: int):
     db.commit()
     db.refresh(db_comment)
     return db_comment
+
+
+def create_rating(db: Session, rating: schemas.RatingCreate, meal_id: int):
+    current_rating = db.query(models.Rating).filter(models.Rating.meal_id == meal_id, models.Rating.writer_id == rating.writer_id).first()
+    if (current_rating):
+        raise HTTPException(status_code=404, detail="You've already rated this meal")
+    db_rating = models.Rating(**rating.dict(), meal_id=meal_id)
+    db.add(db_rating)
+    db.commit()
+    db.refresh(db_rating)
+    return db_rating

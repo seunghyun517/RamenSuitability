@@ -86,17 +86,23 @@ def create_meal(meal: schemas.MealCreate, db: Session = Depends(get_db)):
 def read_meal(meal_id: int, db: Session = Depends(get_db)):
     return crud.get_meal(db=db, meal_id=meal_id)
 
-# @app.get("/meals/{meal_id}/ratings")
-# def read_meal_ratings(meal_id: int):
-#     ratings = ratingofMeals[meal_id]
-#     ratingsum = sum([rating["rating"] for rating in ratings])
-#     ratingavg = ratingsum / len(ratings)
-#     return {"ratings": ratings, "ratingavg": ratingavg}
+
+@app.put("/meals/{meal_id}", response_model=schemas.Meal)
+def update_meal(meal_id: int, meal: schemas.MealCreate, db: Session = Depends(get_db)):
+    db_meal = crud.get_meal(db, meal_id=meal_id)
+    if not db_meal:
+        raise HTTPException(status_code=400, detail="No meal with given ID in database")
+    return crud.update_meal(db=db, current_meal = db_meal, new_meal = meal, meal_id=meal_id)
 
 
 @app.post("/meals/{meal_id}/comments", response_model=schemas.Comment)
-def create_meal_comments(meal_id: int, comment: schemas.CommentCreate, db: Session = Depends(get_db)):
+def create_meal_comment(meal_id: int, comment: schemas.CommentCreate, db: Session = Depends(get_db)):
     return crud.create_comment(db=db, comment=comment, meal_id=meal_id)
+
+
+@app.post("/meals/{meal_id}/ratings", response_model=schemas.Rating)
+def create_meal_rating(meal_id: int, rating: schemas.RatingCreate, db: Session = Depends(get_db)):
+    return crud.create_rating(db=db, rating=rating, meal_id=meal_id)
 
 
 @app.post("/users/", response_model=schemas.User)

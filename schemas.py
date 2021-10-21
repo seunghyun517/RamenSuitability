@@ -32,6 +32,21 @@ class Comment(CommentBase):
     class Config:
         orm_mode = True
 
+class RatingBase(BaseModel):
+    rating: int
+    writer_id: int
+
+class RatingCreate(RatingBase):
+    pass
+
+
+class Rating(RatingBase):
+    id: int
+    meal_id: int
+
+    class Config:
+        orm_mode = True
+
 
 class UserBase(BaseModel):
     email: str
@@ -61,6 +76,7 @@ class Meal(MealBase):
     id: int
     score: int
     comments: List[Comment] = []
+    ratings: List[Rating] = []
     
     class Config:
         orm_mode = True

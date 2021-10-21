@@ -10,6 +10,17 @@ class Meal(Base):
     menu = Column(String)
     score = Column(Integer)
     comments = relationship("Comment", back_populates="meal")
+    ratings = relationship("Rating", back_populates="meal")
+
+
+class Rating(Base):
+    __tablename__ = "ratings"
+    id = Column(Integer, primary_key=True, index=True)
+    rating = Column(Integer)
+    writer_id = Column(Integer, ForeignKey("users.id"))
+    meal_id = Column(Integer, ForeignKey("meals.id"))
+    writer = relationship("User", back_populates="ratings")
+    meal = relationship("Meal", back_populates="ratings")
 
 
 class Comment(Base):
@@ -30,6 +41,7 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     items = relationship("Item", back_populates="owner")
     comments = relationship("Comment", back_populates="writer")
+    ratings = relationship("Rating", back_populates="writer")
 
 
 
