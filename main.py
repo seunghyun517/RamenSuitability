@@ -95,12 +95,12 @@ def update_meal(meal_id: int, meal: schemas.MealCreate, db: Session = Depends(ge
     return crud.update_meal(db=db, current_meal = db_meal, new_meal = meal, meal_id=meal_id)
 
 
-@app.post("/meals/{meal_id}/comments", response_model=schemas.Comment)
+@app.post("/meals/{meal_id}/comments/", response_model=schemas.Comment)
 def create_meal_comment(meal_id: int, comment: schemas.CommentCreate, db: Session = Depends(get_db)):
     return crud.create_comment(db=db, comment=comment, meal_id=meal_id)
 
 
-@app.post("/meals/{meal_id}/ratings", response_model=schemas.Rating)
+@app.post("/meals/{meal_id}/ratings/", response_model=schemas.Rating)
 def create_meal_rating(meal_id: int, rating: schemas.RatingCreate, db: Session = Depends(get_db)):
     return crud.create_rating(db=db, rating=rating, meal_id=meal_id)
 
