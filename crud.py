@@ -29,6 +29,13 @@ def update_meal(db: Session, current_meal: models.Meal, new_meal: schemas.MealCr
     db.commit()
     return current_meal
 
+def delete_meal(db:Session, meal_id:int):
+    item = db.query(models.Meal).filter(models.Meal.id == meal_id)
+    item.delete()
+    db.commit()
+    db.refresh()
+    return item
+
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()

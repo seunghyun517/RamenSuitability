@@ -94,6 +94,9 @@ def update_meal(meal_id: int, meal: schemas.MealCreate, db: Session = Depends(ge
         raise HTTPException(status_code=400, detail="No meal with given ID in database")
     return crud.update_meal(db=db, current_meal = db_meal, new_meal = meal, meal_id=meal_id)
 
+@app.delete("/meals/{meal_id}", response_model = schemas.Meal)
+def delete_meal(meal_id: int, db:Session = Depends(get_db)):
+    return crud.delete_meal(db,meal_id)
 
 @app.post("/meals/{meal_id}/comments/", response_model=schemas.Comment)
 def create_meal_comment(meal_id: int, comment: schemas.CommentCreate, db: Session = Depends(get_db)):
